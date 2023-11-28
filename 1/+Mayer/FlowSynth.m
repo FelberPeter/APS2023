@@ -105,36 +105,39 @@ function ChangeAmplitude(src)
 end
 
 function CreateSamples()
-    global Synth
-    set([Synth.hShape; Synth.hAmplitude],'Color','black');
-    set([Synth.hShape(Synth.ToneShapeId); Synth.hAmplitude(Synth.ToneAmplitudeId)],'Color','yellow');
+global Synth
+set([Synth.hShape; Synth.hAmplitude],'Color','black');
+set([Synth.hShape(Synth.ToneShapeId); Synth.hAmplitude(Synth.ToneAmplitudeId)],'Color','yellow');
 
 
-    % amplitude
-    switch Synth.ToneAmplitudeId
-        case 1                                      % constant
-            Amp = linspace(1,1,Synth.Tones.Fs*Synth.T);
-        case 2                                      % decending
-            Amp = linspace(1,0,Synth.Tones.Fs*Synth.T);
+% amplitude
+switch Synth.ToneAmplitudeId
+    case 1                                      % constant
+        Amp = linspace(1,1,Synth.Tones.Fs*Synth.T);
+    case 2                                      % decending
+        Amp = linspace(1,0,Synth.Tones.Fs*Synth.T);
+end
+
+% shape
+%% Place your calculation for the time instances HERE
+% Shape
+t = linspace(0, Synth.T, Synth.Tones.Fs * Synth.T);  % Time vector for the samples
+
+for i = 1:length(Synth.Tones.Sample)
+    % Place your omega calculation HERE
+    switch Synth.ToneShapeId
+        case 1  % sinus
+            s = sin(2 * pi * Synth.Tones.Frequency(i) * t);
+        case 2  % square
+            s = square(2 * pi * Synth.Tones.Frequency(i) * t);
+        case 3  % 3 sin
+            s = 0.6 * sin(2 * pi * Synth.Tones.Frequency(i) * t) + ...
+                0.3 * sin(2 * 2 * pi * Synth.Tones.Frequency(i) * t) + ...
+                0.1 * sin(4 * 2 * pi * Synth.Tones.Frequency(i) * t);
     end
-
-    % shape
-    %% Place your calculation for the time instances HERE
-
-    for i=1:length(Synth.Tones.Sample)
-        %% Place your omega calculation HERE
-
-        switch Synth.ToneShapeId
-            case 1                                  % sinus
-
-            case 2                                  % square
-
-            case 3                                  % 3 sin
-
-        end
-        %% Uncomment after adding sounds
-        %Synth.Tones.Sample{i} = s.*Amp;
-    end
+    % Uncomment after adding sounds
+    Synth.Tones.Sample{i} = s .* Amp;
+end
 end
 
 function MousePress(ToneId)
