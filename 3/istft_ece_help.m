@@ -8,7 +8,7 @@ y2 = ifft( Z(:,2) ); % the samples in between ( hop + (1:N) ) multiplied by the 
 y3 = ifft( Z(:,3) ); % the samples in between ( 2*hop + (1:N) ) multiplied by the window.
 
 % In an attempt to reconstruct x, we combine these pieces as follows.
-
+                                                                                           
 y = zeros(N + 2*hop,1);
 y(1:N) = y1;
 y( hop + (1:N) ) = y( hop + (1:N) ) + y2;

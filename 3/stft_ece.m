@@ -1,28 +1,26 @@
 function [X_stft, vecT, vecF] = stft_ece(x, win, overlap, fs)
     % STFT function with support for different window types
     
-    % Check if the input signal 'x' is a column vector, if not, transpose it
-    if size(x, 2) > 1
-        x = x';
-    end
-    
     % Length of the signal
     N = length(x);
     
     % Window parameters
     windowSize = length(win);
-    hop = windowSize * (1 - overlap);
+    hop = floor(windowSize * (1 - overlap));
     
     % Calculate the number of time steps
-    numTimeSteps = floor((N - windowSize) / hop) + 1;
+    numTimeSteps = floor((N - windowSize) / hop)+1;
     
     % Initialize STFT matrix
     X_stft = zeros(windowSize, numTimeSteps);
     
     % Compute STFT
     for t = 1:numTimeSteps
+        beginWindow = 1 + (hop*(t-1));
+        endWindow = beginWindow + windowSize - 1;  
+        
         % Extract current windowed segment
-        segment = x((t-1)*hop + 1 : (t-1)*hop + windowSize) .* win;
+        segment = x(beginWindow:endWindow) .* win;
         
         % Compute FFT and store in STFT matrix
         X_stft(:, t) = fft(segment);
@@ -31,7 +29,5 @@ function [X_stft, vecT, vecF] = stft_ece(x, win, overlap, fs)
     % Create time and frequency vectors
     vecT = (0:numTimeSteps-1) * hop / fs;
     vecF = (0:windowSize-1) * fs / windowSize;
-    
-    % Return results
-    return
+
 end
