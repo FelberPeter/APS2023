@@ -2,12 +2,16 @@ function [filteredData] = myMovingAverage(data, windowSize)
     dataSize = length(data);
     filteredData = zeros(size(data));
 
+    % Iterate over the data
     for i = 1:dataSize
-        % Bestimme den Start- und Endindex des aktuellen Fensters
-        startIdx = max(1, i - floor(windowSize/2));
-        endIdx = min(dataSize, i + floor(windowSize/2));
-
-        % Berechne den Mittelwert im aktuellen Fenster
+        % Define the window indices
+        startIdx = i - windowSize + 1;
+        if startIdx < 1
+            startIdx = 1;
+        end
+        endIdx = i;
+        
+        % Calculate the mean over the window
         filteredData(i) = mean(data(startIdx:endIdx));
     end
 end

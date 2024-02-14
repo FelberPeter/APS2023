@@ -1,6 +1,5 @@
 function [X_stft, vecT, vecF] = stft_ece(x, win, overlap, fs)
-    % STFT function with support for different window types
-    
+ 
     % Length of the signal
     N = length(x);
     

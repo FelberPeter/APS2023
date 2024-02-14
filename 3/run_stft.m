@@ -13,7 +13,7 @@ sigmaX2 = var(d);
 Rtarget = 10^(6/20);
 Rcurrent = sigmaX1 / sigmaX2;
 x_mix = x * sqrt(Rtarget / Rcurrent) + d;
-sound(x_mix,Fs)
+%sound(x_mix,Fs)
 
 tic
 winlen_ms = 68;
@@ -38,19 +38,22 @@ colorbar;
 
 
 
-% % Reproduce the time signal by computing the iSTFT
-% x_reconstructed = istft_ece(X_stft, win, overlap);
-% 
-% % Plot the original and reconstructed signals
-% figure;
-% subplot(2, 1, 1);
-% plot(x_mix);
-% title('Mixed Signal');
-% xlabel('Sample');
-% ylabel('Amplitude');
-% 
-% subplot(2, 1, 2);
-% plot(x_reconstructed);
-% title('Reconstructed Signal');
-% xlabel('Sample');
-% ylabel('Amplitude');
+ % Reproduce the time signal by computing the iSTFT
+ x_reconstructed = istft_ece(X_stft, win, overlap);
+
+ % Plot the original and reconstructed signals
+ figure;
+ subplot(2, 1, 1);
+ plot(x_mix);
+ title('Mixed Signal');
+ xlabel('Sample');
+ ylabel('Amplitude');
+ 
+ subplot(2, 1, 2);
+ plot(x_reconstructed);
+ title('Reconstructed Signal');
+ xlabel('Sample');
+ ylabel('Amplitude');
+
+ sound(x_reconstructed,Fs)
+
